@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-
+import HeroSection from "./components/HeroSection";
+import CardGalleryContainer from "./components/CardGalleryContainer";
+import Navbar from "./components/Navbar";
+import { useSelector } from "react-redux";
+import SelectedCardContainer from "./components/SelectedCardContainer";
+import { useEffect, useState } from "react";
+import { WALLPAPERS } from "./utils/constants";
 function App() {
+  const [imageNumber, setImageNumber] = useState(0);
+  const isSelectedCardOpen = useSelector(
+    (state) => state.selectedCard?.selectedCardFlag
+  );
+  useEffect(() => {
+    setImageNumber(Math.floor(Math.random() * 4) + 1);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`relative `}>
+      <img
+        src={`${WALLPAPERS[imageNumber]?.image}`}
+        alt="wallpaper"
+        className=" hidden sm:block sm:w-screen sm:h-full sm:aspect-video"
+      />
+
+      <div
+        className={`${
+          isSelectedCardOpen ? "opacity-[50%]" : "opacity-[100%]"
+        } `}
+      >
+        <Navbar />
+        <HeroSection />
+        <CardGalleryContainer />
+      </div>
+      <SelectedCardContainer />
     </div>
   );
 }
